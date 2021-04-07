@@ -9,6 +9,15 @@
 
 .cell{
   cursor: pointer;
+  padding: min(16px, 1.5vw);
+  z-index:-1;
+  position: relative;
+  transition: 0.1s;
+}
+
+.cell:hover {
+  padding: min(20px, 1.6vw);
+  opacity: 0.5;
 }
 
 table {

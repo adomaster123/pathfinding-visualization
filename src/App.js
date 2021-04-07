@@ -18,7 +18,7 @@ function App() {
     let cell =[];
     for (let idx = 0; idx < grid.length; idx++) {
       let cellID = "cell" + i + "-" + idx;
-      cell.push(<td onClick={() => editHandler(i, idx)} style={{backgroundColor: grid[i][idx] == 0 ? "gray" : grid[i][idx] == 's' ? "green" : grid[i][idx] == "g" ? "red" : "black", padding: "min(16px, 1.5vw)"}} className="cell" key={cellID} id={cellID}></td>)
+      cell.push(<td onClick={() => editHandler(i, idx)} style={{backgroundColor: grid[i][idx] == 0 ? "gray" : grid[i][idx] == 's' ? "green" : grid[i][idx] == "g" ? "red" : "black"}} className="cell" key={cellID} id={cellID}></td>)
     }
 
     rows.push(<tr key={i} id={rowID}>{cell}</tr>)
