@@ -2,7 +2,10 @@ import { useState, useEffect} from 'react';
 import './App.css';
 
 function App() {
-  // Declaring the state variable that will store the layout of the 20x20 maze
+  // State variables for width and height of maze
+  const [mazeWidth, setMazeWidth] = useState(20);
+  const [mazeHeight, setMazeHeight] = useState(20);
+  // Declaring the state variable that will store the layout of the maze
   let arr = [[]];
   let arr1 = new Array(20);
     arr1.fill(0);
@@ -10,7 +13,9 @@ function App() {
     arr[i] = arr1;
   }
   const [grid, setGrid] = useState(arr);
-  const [mode, setMode] = useState("obstacle");
+
+  // This state variable will determine what happens when the user clicks on a cell in the maze.
+  const [mode, setMode] = useState("start");
 
   let rows = [];
   for (let i = 0; i < grid.length; i++) {
@@ -18,19 +23,51 @@ function App() {
     let cell =[];
     for (let idx = 0; idx < grid.length; idx++) {
       let cellID = "cell" + i + "-" + idx;
-      cell.push(<td onClick={() => editHandler(i, idx)} style={{backgroundColor: grid[i][idx] == 0 ? "gray" : grid[i][idx] == 's' ? "green" : grid[i][idx] == "g" ? "red" : "black"}} className="cell" key={cellID} id={cellID}></td>)
+      cell[idx] = (<td onClick={() => editHandler(i, idx)} style={{backgroundColor: grid[i][idx] == 0 ? "gray" : grid[i][idx] == 's' ? "green" : grid[i][idx] == "g" ? "red" : "black"}} className="cell" key={cellID} id={cellID}></td>)
     }
 
-    rows.push(<tr key={i} id={rowID}>{cell}</tr>)
+    rows[i] = (<tr key={i} id={rowID}>{cell}</tr>)
   }
 
   function editHandler(y, x) {
+    let copy = [];
     switch(mode) {
       case "obstacle":
-        let copy = grid.slice();
+        for (let i = 0; i < grid.length; i++) {
+          copy[i] = grid[i].slice();
+        }
         copy[y][x] = 1;
         setGrid(copy);
         break;
+      case "start":
+        if (grid.some(row => row.includes('s'))) {
+          alert("Maze already contains start.");
+        } else {
+        for (let i = 0; i < grid.length; i++) {
+          copy[i] = grid[i].slice();
+        }
+        copy[y][x] = 's';
+        setGrid(copy);
+        }
+        break;
+      case "goal":
+        if (grid.some(row => row.includes('g'))) {
+          alert("Maze already contains goal.");
+        } else {
+        for (let i = 0; i < grid.length; i++) {
+          copy[i] = grid[i].slice();
+        }
+        copy[y][x] = 'g';
+        setGrid(copy);
+        }
+        break;
+        case "delete":
+          for (let i = 0; i < grid.length; i++) {
+            copy[i] = grid[i].slice();
+          }
+          copy[y][x] = 0;
+          setGrid(copy);
+          break;
       default:
         break;
     }
@@ -39,12 +76,12 @@ function App() {
     <div className="App">
       <h1>Pathfinding Algorithm Visualization Tool</h1>
       <div className="button-container">
-        <button className="buttons">Start</button>
-        <button className="buttons">Goal</button>
-        <button className="buttons" onClick={() => setMode("obstacles")}>Obstacles</button>
+        <button className="buttons" onClick={() => setMode("start")}>Start</button>
+        <button className="buttons" onClick={() => setMode("goal")}>Goal</button>
+        <button className="buttons" onClick={() => setMode("obstacle")}>Obstacles</button>
         <button className="buttons">Randomize</button>
-        <button className="buttons">Delete</button>
-        <button className="buttons">Clear</button>
+        <button className="buttons" onClick={() => setMode("delete")}>Delete</button>
+        <button className="buttons" onClick={() => setGrid(arr)}>Clear</button>
       </div>
       <div className="grid-container">
         <table>

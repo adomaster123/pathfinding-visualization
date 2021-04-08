@@ -16,7 +16,6 @@
 }
 
 .cell:hover {
-  padding: min(20px, 1.6vw);
   opacity: 0.5;
 }
 
