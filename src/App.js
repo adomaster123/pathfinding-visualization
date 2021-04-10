@@ -123,7 +123,7 @@ function App() {
         <select className="buttons" onChange={(e) => {setAlgorithm(e.target.value)}}>
           <option>Depth First Search</option>
           <option>Breadth First Search</option>
-          <option>A*</option>
+          {/* <option>A*</option> */}
         </select>
         <button className="buttons" onClick={() => selectionHandler()}> Find Path</button>
       </div>
