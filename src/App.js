@@ -1,17 +1,18 @@
 import {useState} from 'react';
 import './App.css';
-import {depthFirstSearch, copyArray} from './Algos.js';
+import {depthFirstSearch, breadthFirstSearch, copyArray} from './Algos.js';
 
 function App() {
   // State variables for width and height of maze
   const [startCoords, setStartCoords] = useState([]);
+  const [goalCoords, setGoalCoords] = useState([]);
 
   const [algorithm, setAlgorithm] = useState("Depth First Search");
   // Declaring the state variable that will store the layout of the maze
   let arr = [[]];
-  let arr1 = new Array(6);
+  let arr1 = new Array(20);
     arr1.fill(0);
-  for (let i = 0; i < 6; i++) {
+  for (let i = 0; i < 20; i++) {
     arr[i] = arr1;
   }
   const [grid, setGrid] = useState(arr);
@@ -25,7 +26,7 @@ function App() {
     let cell =[];
     for (let idx = 0; idx < grid.length; idx++) {
       let cellID = "cell" + i + "-" + idx;
-      cell[idx] = (<td onClick={() => editHandler(i, idx)} style={{backgroundColor: grid[i][idx] === 0 ? "gray" : grid[i][idx] === 's' ? "green" : grid[i][idx] === "g" ? "red" : grid[i][idx] === "x" ? "yellow" : "black"}} className="cell" key={cellID} id={cellID}></td>)
+      cell[idx] = (<td onClick={() => editHandler(i, idx)} style={{backgroundColor: grid[i][idx] === 0 ? "gray" : grid[i][idx] === 's' ? "green" : grid[i][idx] === "g" ? "red" : grid[i][idx] === "x" ? "yellow" : grid[i][idx] === "p" ? "blue" : "black"}} className="cell" key={cellID} id={cellID}></td>)
     }
 
     rows[i] = (<tr key={i} id={rowID}>{cell}</tr>)
@@ -58,6 +59,7 @@ function App() {
         copy[y][x] = 'g';
         setGrid(copy);
         setMode("obstacle");
+        setGoalCoords([x,y]);
         }
         break;
         case "delete":
@@ -72,7 +74,8 @@ function App() {
 
   function selectionHandler() {
     if (!grid.some((row) => row.includes('g')) || !grid.some((row) => row.includes('s'))) {
-      alert("Please choose a start and a goal.")
+      alert("Please choose a start and a goal.");
+      return;
     }
     switch(algorithm) {
       case "Depth First Search":
@@ -80,6 +83,12 @@ function App() {
 
         animate(res[0]);
         if (!res[1]) alert("No valid path to goal");
+        break;
+      case "Breadth First Search" :
+        let res1 = breadthFirstSearch(copyArray(grid), startCoords, goalCoords);
+
+        animate(res1[0]);
+        if (!res1[1]) alert("No valid path to goal");
         break;
       default:
         break;
