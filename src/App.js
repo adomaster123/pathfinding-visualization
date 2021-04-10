@@ -97,7 +97,7 @@ function App() {
 
   async function animate(frames) {
     for (let i = 0; i < frames.length; i++) {
-      await setTimeout(() => setGrid(frames[i]), i * 250);
+      await setTimeout(() => setGrid(frames[i]), i * 200);
     }
   }
 
@@ -108,7 +108,7 @@ function App() {
         <button className="buttons" onClick={() => setMode("start")}>Start</button>
         <button className="buttons" onClick={() => setMode("goal")}>Goal</button>
         <button className="buttons" onClick={() => setMode("obstacle")}>Obstacles</button>
-        <button className="buttons">Randomize</button>
+        {/* <button className="buttons">Randomize</button> */}
         <button className="buttons" onClick={() => setMode("delete")}>Delete</button>
         <button className="buttons" onClick={() => setGrid(arr)}>Clear</button>
       </div>
