@@ -143,6 +143,7 @@ export function breadthFirstSearch(grid, startCoords, goalCoords) {
 }
 
 export function randomizeMaze(height, width) {
+    let connected = [];
     let frames = [];
 
     let maze = [];
@@ -159,9 +160,7 @@ export function randomizeMaze(height, width) {
 
     let frontierCells = computeFrontierCells(maze, randCell[0], randCell[1]);
 
-    let i = 0;
-
-    while (frontierCells.length > 0 && i < 100) {
+    while (frontierCells.length > 0) {
         let randFrontierCell = frontierCells[Math.floor(Math.random() * frontierCells.length)];
         
 
@@ -170,16 +169,16 @@ export function randomizeMaze(height, width) {
         if (neighbors.length > 0) {
             let randNeighbor = neighbors[Math.floor(Math.random() * neighbors.length)];
 
-            maze[(randFrontierCell[1] + randNeighbor[1]) / 2][(randFrontierCell[0] + randNeighbor[0]) / 2] = 0;
-            frames.push(copyArray(maze));
+            if (!connected.some((coords) => coords[0] === randFrontierCell[0] && coords[1] === randFrontierCell[1])) {
+                maze[(randFrontierCell[1] + randNeighbor[1]) / 2][(randFrontierCell[0] + randNeighbor[0]) / 2] = 0;
+                maze[randFrontierCell[1]][randFrontierCell[0]] = 0;
+                connected.push(randFrontierCell);
+                frames.push(copyArray(maze));
+            }
         }
-
-        maze[randFrontierCell[1]][randFrontierCell[0]] = 0;
-        frames.push(copyArray(maze));
 
         frontierCells.push(...computeFrontierCells(maze, randFrontierCell[0], randFrontierCell[1]));
         frontierCells.splice(frontierCells.indexOf(randFrontierCell), 1);
-         i++;
     }
 
     return frames;

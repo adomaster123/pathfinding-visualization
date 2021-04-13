@@ -100,7 +100,7 @@ function App() {
   function handleRandomize() {
     setGrid(arr);
     let frames = randomizeMaze(grid.length, grid[0].length);
-    animate(frames, 100);
+    animate(frames, 50);
   }
 
   function selectiveClear() {
