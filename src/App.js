@@ -75,10 +75,12 @@ function App() {
 
   function selectionHandler() {
     selectiveClear();
+    
     if (!grid.some((row) => row.includes('g')) || !grid.some((row) => row.includes('s'))) {
       alert("Please choose a start and a goal.");
       return;
     }
+
     if (grid.some((row) => row.includes('x') || row.includes('p'))) return;
     switch(algorithm) {
       case "Depth First Search":

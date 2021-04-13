@@ -114,7 +114,7 @@ export function breadthFirstSearch(grid, startCoords, goalCoords) {
 
     let currentCoords = goalCoords.slice();
     
-    if (foundGoal) {
+    if (cost[goalCoords[1]][goalCoords[0]] !== -1) {
     while (cost[currentCoords[1]][currentCoords[0]] !== 0) {
         grid[currentCoords[1]][currentCoords[0]] = 'p';
         grid[goalCoords[1]][goalCoords[0]] = 'g';
