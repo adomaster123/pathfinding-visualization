@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import './App.css';
-import {depthFirstSearch, breadthFirstSearch, copyArray} from './Algos.js';
+import {depthFirstSearch, breadthFirstSearch, randomizeMaze, copyArray} from './Algos.js';
 
 function App() {
   // State variables for width and height of maze
@@ -10,16 +10,16 @@ function App() {
   const [algorithm, setAlgorithm] = useState("Depth First Search");
   // Declaring the state variable that will store the layout of the maze
   let arr = [[]];
-  let arr1 = new Array(20);
+  let arr1 = new Array(19);
     arr1.fill(0);
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < 19; i++) {
     arr[i] = arr1;
   }
   const [grid, setGrid] = useState(arr);
 
   // This state variable will determine what happens when the user clicks on a cell in the maze.
   const [mode, setMode] = useState("start");
-
+  
   let rows = [];
   for (let i = 0; i < grid.length; i++) {
     let rowID = "row" + i;
@@ -33,6 +33,7 @@ function App() {
   }
 
   function editHandler(y, x) {
+    stop();
     let copy = [];
     switch(mode) {
       case "obstacle":
@@ -73,6 +74,7 @@ function App() {
   }
 
   function selectionHandler() {
+    selectiveClear();
     if (!grid.some((row) => row.includes('g')) || !grid.some((row) => row.includes('s'))) {
       alert("Please choose a start and a goal.");
       return;
@@ -81,13 +83,13 @@ function App() {
       case "Depth First Search":
         let res = depthFirstSearch(copyArray(grid), startCoords);
 
-        animate(res[0]);
+        animate(res[0], 200);
         if (!res[1]) alert("No valid path to goal");
         break;
       case "Breadth First Search" :
         let res1 = breadthFirstSearch(copyArray(grid), startCoords, goalCoords);
 
-        animate(res1[0]);
+        animate(res1[0], 200);
         if (!res1[1]) alert("No valid path to goal");
         break;
       default:
@@ -95,9 +97,41 @@ function App() {
     }
   }
 
-  async function animate(frames) {
-    for (let i = 0; i < frames.length; i++) {
-      await setTimeout(() => setGrid(frames[i]), i * 200);
+  function handleRandomize() {
+    setGrid(arr);
+    let frames = randomizeMaze(grid.length, grid[0].length);
+    animate(frames, 100);
+  }
+
+  function selectiveClear() {
+    let array = copyArray(grid);
+
+    for (let i = 0; i < array.length; i++) {
+      for (let j = 0; j < array[i].length; j++) {
+        if (array[i][j] !== 0 && array[i][j] !== 1 && array[i][j] !== 's' && array[i][j] !== 'g') {
+          array[i][j] = 0;
+        }
+      }
+    }
+
+    setGrid(array);
+  }
+
+  async function animate(frames, delay) {
+    stop();
+    let i = 0;
+    let timer = setInterval(() => {
+      setGrid(frames[i]);
+      if (i >= frames.length - 1) {
+        clearInterval(timer);
+      }
+      i++;
+    }, delay);
+  }
+
+  function stop() {
+    for (let i = 0; i < 1000; i++) {
+      window.clearInterval(i);
     }
   }
 
@@ -108,9 +142,9 @@ function App() {
         <button className="buttons" onClick={() => setMode("start")}>Start</button>
         <button className="buttons" onClick={() => setMode("goal")}>Goal</button>
         <button className="buttons" onClick={() => setMode("obstacle")}>Obstacles</button>
-        {/* <button className="buttons">Randomize</button> */}
+        <button className="buttons" onClick={() => handleRandomize()}>Randomize</button>
         <button className="buttons" onClick={() => setMode("delete")}>Delete</button>
-        <button className="buttons" onClick={() => setGrid(arr)}>Clear</button>
+        <button className="buttons" onClick={() => {setGrid(arr)}}>Clear</button>
       </div>
       <div className="grid-container">
         <table>
@@ -120,12 +154,12 @@ function App() {
         </table>
       </div>
       <div className="button-container">
-        <select className="buttons" onChange={(e) => {setAlgorithm(e.target.value)}}>
+        <select className="buttons" onChange={(e) => {setAlgorithm(e.target.value); selectiveClear()}}>
           <option>Depth First Search</option>
           <option>Breadth First Search</option>
           {/* <option>A*</option> */}
         </select>
-        <button className="buttons" onClick={() => selectionHandler()}> Find Path</button>
+        <button className="buttons" onClick={() => {selectiveClear(); selectionHandler()}}> Find Path</button>
       </div>
     </div>
   );

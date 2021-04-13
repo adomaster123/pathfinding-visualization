@@ -23,8 +23,8 @@ export function depthFirstRecurse(grid, frames, currentCoords, path) {
         }
         return;
     }
+    if (grid[currentCoords[1]][currentCoords[0]] !== 's') grid[currentCoords[1]][currentCoords[0]] = 'x';
 
-    grid[currentCoords[1]][currentCoords[0]] = 'x';
     if (!foundGoal) {
         frames.push(copyArray(grid));
     }
@@ -117,6 +117,7 @@ export function breadthFirstSearch(grid, startCoords, goalCoords) {
     if (foundGoal) {
     while (cost[currentCoords[1]][currentCoords[0]] !== 0) {
         grid[currentCoords[1]][currentCoords[0]] = 'p';
+        grid[goalCoords[1]][goalCoords[0]] = 'g';
         frames.push(copyArray(grid));
         let currentCost = cost[currentCoords[1]][currentCoords[0]];
 
@@ -138,8 +139,72 @@ export function breadthFirstSearch(grid, startCoords, goalCoords) {
         }
     }
 }
-    console.log(cost);
     return [frames, foundGoal];
+}
+
+export function randomizeMaze(height, width) {
+    let frames = [];
+
+    let maze = [];
+    let mazeRow = new Array(width).fill(1);
+    
+    for (let i = 0; i < height; i++) {
+        maze.push(mazeRow.slice());
+    }
+
+    let randCell = [Math.floor(Math.random() * width), Math.floor(Math.random() * height)];
+    maze[randCell[1]][randCell[0]] = 0;
+
+    frames.push(copyArray(maze));
+
+    let frontierCells = computeFrontierCells(maze, randCell[0], randCell[1]);
+
+    let i = 0;
+
+    while (frontierCells.length > 0 && i < 100) {
+        let randFrontierCell = frontierCells[Math.floor(Math.random() * frontierCells.length)];
+        
+
+        let neighbors = computeNeighbors(maze, randFrontierCell[0], randFrontierCell[1]);
+
+        if (neighbors.length > 0) {
+            let randNeighbor = neighbors[Math.floor(Math.random() * neighbors.length)];
+
+            maze[(randFrontierCell[1] + randNeighbor[1]) / 2][(randFrontierCell[0] + randNeighbor[0]) / 2] = 0;
+            frames.push(copyArray(maze));
+        }
+
+        maze[randFrontierCell[1]][randFrontierCell[0]] = 0;
+        frames.push(copyArray(maze));
+
+        frontierCells.push(...computeFrontierCells(maze, randFrontierCell[0], randFrontierCell[1]));
+        frontierCells.splice(frontierCells.indexOf(randFrontierCell), 1);
+         i++;
+    }
+
+    return frames;
+}
+
+function computeFrontierCells(maze, x, y) {
+    let frontierCells = [];
+
+    if (y - 2 >= 0 && maze[y - 2][x] === 1) frontierCells.push([x, y - 2]);
+    if (x + 2 < maze[0].length && maze[y][x + 2] === 1) frontierCells.push([x + 2, y]);
+    if (y + 2 < maze.length && maze[y + 2][x] === 1) frontierCells.push([x, y + 2]);
+    if (x - 2 >= 0 && maze[y][x - 2] === 1) frontierCells.push([x - 2, y]);
+
+    return frontierCells;
+}
+
+function computeNeighbors(maze, x, y) {
+    let neighbors = [];
+
+    if (y - 2 >= 0 && maze[y - 2][x] === 0) neighbors.push([x, y - 2]);
+    if (x + 2 < maze[0].length && maze[y][x + 2] === 0) neighbors.push([x + 2, y]);
+    if (y + 2 < maze.length && maze[y + 2][x] === 0) neighbors.push([x, y + 2]);
+    if (x - 2 >= 0 && maze[y][x - 2] === 0) neighbors.push([x - 2, y]);
+
+    return neighbors;
 }
 
 export function copyArray(arr) {
