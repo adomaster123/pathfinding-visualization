@@ -171,6 +171,7 @@ export function randomizeMaze(height, width) {
 
             if (!connected.some((coords) => coords[0] === randFrontierCell[0] && coords[1] === randFrontierCell[1])) {
                 maze[(randFrontierCell[1] + randNeighbor[1]) / 2][(randFrontierCell[0] + randNeighbor[0]) / 2] = 0;
+                frames.push(copyArray(maze));
                 maze[randFrontierCell[1]][randFrontierCell[0]] = 0;
                 connected.push(randFrontierCell);
                 frames.push(copyArray(maze));

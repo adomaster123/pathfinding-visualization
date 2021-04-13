@@ -10,9 +10,9 @@ function App() {
   const [algorithm, setAlgorithm] = useState("Depth First Search");
   // Declaring the state variable that will store the layout of the maze
   let arr = [[]];
-  let arr1 = new Array(19);
+  let arr1 = new Array(21);
     arr1.fill(0);
-  for (let i = 0; i < 19; i++) {
+  for (let i = 0; i < 21; i++) {
     arr[i] = arr1;
   }
   const [grid, setGrid] = useState(arr);
@@ -79,31 +79,43 @@ function App() {
       alert("Please choose a start and a goal.");
       return;
     }
+    if (grid.some((row) => row.includes('x') || row.includes('p'))) return;
     switch(algorithm) {
       case "Depth First Search":
         let res = depthFirstSearch(copyArray(grid), startCoords);
 
         animate(res[0], 200);
-        if (!res[1]) alert("No valid path to goal");
         break;
       case "Breadth First Search" :
         let res1 = breadthFirstSearch(copyArray(grid), startCoords, goalCoords);
 
         animate(res1[0], 200);
-        if (!res1[1]) alert("No valid path to goal");
         break;
       default:
         break;
     }
   }
 
+  function clear() {
+    stop();
+    let arr = [[]];
+    let arr1 = new Array(21);
+    arr1.fill(0);
+    for (let i = 0; i < 21; i++) {
+      arr[i] = arr1;
+    }
+    setGrid(arr);
+  }
+
   function handleRandomize() {
+    clear();
     setGrid(arr);
     let frames = randomizeMaze(grid.length, grid[0].length);
     animate(frames, 50);
   }
 
   function selectiveClear() {
+    stop();
     let array = copyArray(grid);
 
     for (let i = 0; i < array.length; i++) {
@@ -127,6 +139,7 @@ function App() {
       }
       i++;
     }, delay);
+    setGrid(frames[i]);
   }
 
   function stop() {
@@ -144,7 +157,7 @@ function App() {
         <button className="buttons" onClick={() => setMode("obstacle")}>Obstacles</button>
         <button className="buttons" onClick={() => handleRandomize()}>Randomize</button>
         <button className="buttons" onClick={() => setMode("delete")}>Delete</button>
-        <button className="buttons" onClick={() => {setGrid(arr)}}>Clear</button>
+        <button className="buttons" onClick={() => clear()}>Clear</button>
       </div>
       <div className="grid-container">
         <table>
@@ -154,12 +167,12 @@ function App() {
         </table>
       </div>
       <div className="button-container">
-        <select className="buttons" onChange={(e) => {setAlgorithm(e.target.value); selectiveClear()}}>
+        <select className="buttons" onChange={(e) => {setAlgorithm(e.target.value)}}>
           <option>Depth First Search</option>
           <option>Breadth First Search</option>
           {/* <option>A*</option> */}
         </select>
-        <button className="buttons" onClick={() => {selectiveClear(); selectionHandler()}}> Find Path</button>
+        <button className="buttons" onClick={() => {selectionHandler()}}> Find Path</button>
       </div>
     </div>
   );
