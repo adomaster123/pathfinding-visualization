@@ -20,12 +20,14 @@ function App() {
   // This state variable will determine what happens when the user clicks on a cell in the maze.
   const [mode, setMode] = useState("start");
   
+  // Generating the 2d maze array.
   let rows = [];
   for (let i = 0; i < grid.length; i++) {
     let rowID = "row" + i;
     let cell =[];
     for (let idx = 0; idx < grid.length; idx++) {
       let cellID = "cell" + i + "-" + idx;
+      // This handles updating the color of the cells in the maze grid in real time when clicked.
       cell[idx] = (<td onClick={() => editHandler(i, idx)} style={{backgroundColor: grid[i][idx] === 0 ? "gray" : grid[i][idx] === 's' ? "green" : grid[i][idx] === "g" ? "red" : grid[i][idx] === "x" ? "yellow" : grid[i][idx] === "p" ? "blue" : "black"}} className="cell" key={cellID} id={cellID}></td>)
     }
 
@@ -172,7 +174,6 @@ function App() {
         <select className="buttons" onChange={(e) => {setAlgorithm(e.target.value)}}>
           <option>Depth First Search</option>
           <option>Breadth First Search</option>
-          {/* <option>A*</option> */}
         </select>
         <button className="buttons" onClick={() => {selectionHandler()}}> Find Path</button>
       </div>

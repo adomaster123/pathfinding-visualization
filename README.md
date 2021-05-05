@@ -68,3 +68,11 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+### Source code
+
+Algos.js and App.js contain the bulk of the logic and styling behind the program. There is minimal CSS styling in App.css.
+
+### Live build
+
+https://pathfinding-visualization.netlify.app/
