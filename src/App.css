@@ -1,5 +1,7 @@
 .App {
   text-align: center;
+  table-layout: fixed;
+  box-sizing: border-box;
 }
 
 .buttons {
