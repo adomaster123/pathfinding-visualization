@@ -123,7 +123,8 @@ function App() {
     'To use this tool, either press Randomize to randomize a maze or create a custom maze by pressing Obstacles to start putting down obstacles by clicking on tiles. ' +
     'Once you\'re satisfied with your maze, press start and then select a tile to specify the maze start. Then click on another tile to specify a goal. ' +
     'Then select a sorting algorithm from the drop down menu below the maze, press Find Path, and watch the magic happen. ' +
-    'You can press the delete button to delete individual tiles, and the clear button to wipe the maze clean. ')
+    'You can press the delete button to delete individual tiles, and the clear button to wipe the maze clean. ' +
+    'I want you to try your hardest to make this tool glitch out. I spent a long time making that very difficult.')
   }
 
   function selectiveClear() {

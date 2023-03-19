@@ -17,7 +17,7 @@ export function depthFirstRecurse(grid, frames, currentCoords, path) {
     if (grid[currentCoords[1]][currentCoords[0]] === 'x') return;
     if (grid[currentCoords[1]][currentCoords[0]] === 'g') {
         foundGoal = true;
-        for (let i = path.length - 1; i >= 1; i--) {
+        for (let i = path.length - 1; i > 2; i--) {
             grid[path[i][1]][path[i][0]] = 'p';
             frames.push(copyArray(grid));
         }
