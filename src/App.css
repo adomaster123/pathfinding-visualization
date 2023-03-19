@@ -12,7 +12,6 @@
 .cell{
   cursor: pointer;
   padding: min(16px, 1.5vw);
-  z-index:-1;
   position: relative;
   transition: 0.1s;
 }
