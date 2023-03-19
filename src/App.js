@@ -118,6 +118,14 @@ function App() {
     animate(frames, 50);
   }
 
+  function handleHelp() {
+    alert('This tool lets you watch how different sorting algorithms go about solving a 21x21 2D maze. ' +
+    'To use this tool, either press Randomize to randomize a maze or create a custom maze by pressing Obstacles to start putting down obstacles by clicking on tiles. ' +
+    'Once you\'re satisfied with your maze, press start and then select a tile to specify the maze start. Then click on another tile to specify a goal. ' +
+    'Then select a sorting algorithm from the drop down menu below the maze, press Find Path, and watch the magic happen. ' +
+    'You can press the delete button to delete individual tiles, and the clear button to wipe the maze clean. ')
+  }
+
   function selectiveClear() {
     stop();
     let array = copyArray(grid);
@@ -155,6 +163,9 @@ function App() {
   return (
     <div className="App">
       <h1>Pathfinding Algorithm Visualization Tool</h1>
+      <div className="button-container">
+        <button className="important-buttons" onClick={() => handleHelp()}>Help</button>
+      </div>
       <div className="button-container">
         <button className="buttons" onClick={() => setMode("start")}>Start</button>
         <button className="buttons" onClick={() => setMode("goal")}>Goal</button>

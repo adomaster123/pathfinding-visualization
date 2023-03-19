@@ -9,6 +9,11 @@
   font-size: 20px;
 }
 
+.important-buttons {
+  margin: 10px;
+  font-size: 25px;
+}
+
 .cell{
   cursor: pointer;
   padding: min(16px, 1.5vw);
