@@ -17,18 +17,27 @@ export function depthFirstRecurse(grid, frames, currentCoords, path) {
     if (grid[currentCoords[1]][currentCoords[0]] === 'x') return;
     if (grid[currentCoords[1]][currentCoords[0]] === 'g') {
         foundGoal = true;
-        for (let i = path.length - 1; i > 0; i--) {
+        let i = path.length - 1;
+        // drawing path
+        for (; i > 0 && grid[currentCoords[1]][currentCoords[0]] !== 's'; i--) {
+            grid[path[i][1]][path[i][0]] = 'p';
+            frames.push(copyArray(grid));
+        }
+        // drawing last path square (must be done separately for mystical reasons)
+        if (grid[currentCoords[1]][currentCoords[0]] !== 's') {
             grid[path[i][1]][path[i][0]] = 'p';
             frames.push(copyArray(grid));
         }
         return;
     }
-    if (grid[currentCoords[1]][currentCoords[0]] !== 's') grid[currentCoords[1]][currentCoords[0]] = 'x';
+    if (grid[currentCoords[1]][currentCoords[0]] !== 's') {
+        grid[currentCoords[1]][currentCoords[0]] = 'x';
+        path.push(currentCoords.slice());
+    };
 
     if (!foundGoal) {
         frames.push(copyArray(grid));
     }
-    path.push(currentCoords.slice());
 
     depthFirstRecurse(grid, frames, [currentCoords[0], currentCoords[1] - 1], copyArray(path));
     depthFirstRecurse(grid, frames, [currentCoords[0] + 1, currentCoords[1]], copyArray(path));
@@ -214,4 +223,4 @@ export function copyArray(arr) {
       copy[i] = arr[i].slice();
     }
     return copy;
-  }
+}
