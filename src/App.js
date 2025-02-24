@@ -119,7 +119,7 @@ function App() {
   }
 
   function handleHelp() {
-    alert('This tool lets you watch how different sorting algorithms go about solving a 21x21 2D maze. ' +
+    alert('This tool lets you watch how different pathfinding algorithms go about solving a 21x21 2D maze. ' +
     'To use this tool, either press Randomize to randomize a maze or create a custom maze by pressing Obstacles to start putting down obstacles by clicking on tiles. ' +
     'Once you\'re satisfied with your maze, press start and then select a tile to specify the maze start. Then click on another tile to specify a goal. ' +
     'Then select a sorting algorithm from the drop down menu below the maze, press Find Path, and watch the magic happen. ' +

@@ -19,12 +19,7 @@ export function depthFirstRecurse(grid, frames, currentCoords, path) {
         foundGoal = true;
         let i = path.length - 1;
         // drawing path
-        for (; i > 0 && grid[currentCoords[1]][currentCoords[0]] !== 's'; i--) {
-            grid[path[i][1]][path[i][0]] = 'p';
-            frames.push(copyArray(grid));
-        }
-        // drawing last path square (must be done separately for mystical reasons)
-        if (grid[currentCoords[1]][currentCoords[0]] !== 's') {
+        for (; i >= 0 && grid[path[i][1]][path[i][0]] !== 's'; i--) {
             grid[path[i][1]][path[i][0]] = 'p';
             frames.push(copyArray(grid));
         }
@@ -32,8 +27,9 @@ export function depthFirstRecurse(grid, frames, currentCoords, path) {
     }
     if (grid[currentCoords[1]][currentCoords[0]] !== 's') {
         grid[currentCoords[1]][currentCoords[0]] = 'x';
-        path.push(currentCoords.slice());
     };
+
+    path.push(currentCoords.slice());
 
     if (!foundGoal) {
         frames.push(copyArray(grid));
@@ -124,7 +120,7 @@ export function breadthFirstSearch(grid, startCoords, goalCoords) {
     let currentCoords = goalCoords.slice();
     
     if (cost[goalCoords[1]][goalCoords[0]] !== -1) {
-        console.log("TRUE");
+        
     while (cost[currentCoords[1]][currentCoords[0]] > 0) {
         grid[currentCoords[1]][currentCoords[0]] = 'p';
         grid[goalCoords[1]][goalCoords[0]] = 'g';
